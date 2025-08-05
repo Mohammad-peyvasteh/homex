@@ -33,7 +33,7 @@ const SidebarMenu = () => {
   } = useProductContext();
   return (
     <div
-      className={` md:hidden fixed top-0 right-0 h-full  w-[55%] md:w-80 bg-white shadow-lg transform transition-transform z-40 ${
+      className={`container mx-auto md:hidden fixed top-0 right-0 h-full  w-[55%] md:w-80 bg-white shadow-lg transform transition-transform z-40 ${
         showMenu ? "translate-x-0" : "translate-x-full"
       }`}
     >

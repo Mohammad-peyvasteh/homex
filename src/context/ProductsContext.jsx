@@ -7,8 +7,8 @@ import { createContext, useState, useEffect, useContext } from "react";
 const ProductContext = createContext([]);
 
 export const ProductProvider = ({ children }) => {
-  const API_ITEMS = "http://localhost:3000/api/products";
-  const API_CART = "http://localhost:3000/api/cart";
+  const API_ITEMS = "https://json-server-production-ceef.up.railway.app/items";
+  const API_CART = "https://json-server-production-ceef.up.railway.app/cart";
 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -47,9 +47,11 @@ export const ProductProvider = ({ children }) => {
     }, 1000);
   }, []);
 
-  const addToCart = async (item) => {
+ const addToCart = async (item) => {
+  
     const existing = cartItems.find((cartItem) => cartItem.id === item.id);
     if (existing) {
+
       await incrementQty(item.id);
     } else {
       const newCartItem = { ...item, quantity: 1 };
@@ -60,8 +62,8 @@ export const ProductProvider = ({ children }) => {
           body: JSON.stringify(newCartItem),
         });
         if (!response.ok) throw new Error("Failed to add item to cart");
-        const updatedCart = await response.json(); // کل کارت برمی‌گردد
-        setCartItems(updatedCart);
+        const savedCartItem = await response.json();
+        setCartItems((prev) => [...prev, savedCartItem]);
       } catch (err) {
         console.error(err.message);
       }
@@ -72,50 +74,54 @@ export const ProductProvider = ({ children }) => {
     const item = cartItems.find((i) => i.id === id);
     if (!item) return;
 
-    const updatedQuantity = item.quantity + 1;
+    const updatedItem = { ...item, quantity: item.quantity + 1 };
 
     try {
-      const response = await fetch(API_CART, {
+      const response = await fetch(`${API_CART}/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, quantity: updatedQuantity }),
+        body: JSON.stringify({ quantity: updatedItem.quantity }),
       });
       if (!response.ok) throw new Error("Failed to increase quantity");
       const data = await response.json();
-      setCartItems((prev) => prev.map((i) => (i.id === id ? data : i)));
+      setCartItems((prev) =>
+        prev.map((i) => (i.id === id ? data : i))
+      );
     } catch (err) {
       console.error(err.message);
     }
   };
-
-  const decrementQty = async (id) => {
+   const decrementQty = async (id) => {
     const item = cartItems.find((i) => i.id === id);
     if (!item) return;
 
     if (item.quantity <= 1) {
       try {
-        const response = await fetch(`${API_CART}?id=${id}`, { method: "DELETE" });
+        const response = await fetch(`${API_CART}/${id}`, { method: "DELETE" });
         if (!response.ok) throw new Error("Failed to remove item from cart");
         setCartItems((prev) => prev.filter((i) => i.id !== id));
       } catch (err) {
         console.error(err.message);
       }
     } else {
-      const updatedQuantity = item.quantity - 1;
+      const updatedItem = { ...item, quantity: item.quantity - 1 };
       try {
-        const response = await fetch(API_CART, {
+        const response = await fetch(`${API_CART}/${id}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id, quantity: updatedQuantity }),
+          body: JSON.stringify({ quantity: updatedItem.quantity }),
         });
         if (!response.ok) throw new Error("Failed to decrease quantity");
         const data = await response.json();
-        setCartItems((prev) => prev.map((i) => (i.id === id ? data : i)));
+        setCartItems((prev) =>
+          prev.map((i) => (i.id === id ? data : i))
+        );
       } catch (err) {
         console.error(err.message);
       }
     }
   };
+
 
   const getTotalPrice = () => {
     return cartItems.reduce((total, item) => {

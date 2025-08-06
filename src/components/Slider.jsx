@@ -101,7 +101,7 @@ const Slider = () => {
                 <p className="  text-sm  text-tertiary-900">{item.des}</p>
                 <div className=" flex justify-between items-center">
                   <button className=" text-primary-800 bg-secondary-600 hover:bg-secondary-700 transition-all duration-300 cursor-pointer   p-1 rounded-md">
-                  <Link  href="http://localhost:3000/products">مشاهده</Link>
+                  <Link  href="https://mohammadpeyvaste-homex.vercel.app/products">مشاهده</Link>
                   </button>
                   <h2 className="text-primary-800 ">کالا</h2>
                 </div>

@@ -13,7 +13,7 @@ const Sidebar = () => {
   } = useProductContext();
   return (
     <div
-      className={`fixed top-0 right-0 h-full  w-[50%] md:w-80 bg-white shadow-lg transform transition-transform z-40 ${
+      className={`fixed top-0 right-0 h-full  w-[55%] md:w-80 bg-white shadow-lg transform transition-transform z-40 ${
         showSidebar ? "translate-x-0" : "translate-x-full"
       }`}
     >

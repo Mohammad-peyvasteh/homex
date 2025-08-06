@@ -82,11 +82,11 @@ const Navbar = () => {
               <FiPhone className=" hidden md:block text-xl " />
               <div className="relative ">
                 <CiShoppingBasket
-                  className="w-full h-full text-primary-800 text-3xl"
+                  className=" text-primary-800 text-3xl"
                   onClick={() => setShowSidebar(!showSidebar)}
                 />
                 {cartItems.length > 0 && (
-                  <div className="absolute -top-1 -right-1 bg-white text-primary-800 text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                  <div className="absolute top-0  right-0 bg-white text-primary-800 text-xs w-4 h-4 flex items-center justify-center rounded-full">
                     {cartItems.reduce((acc, item) => acc + item.quantity, 0)}
                   </div>
                 )}

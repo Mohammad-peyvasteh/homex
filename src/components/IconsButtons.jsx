@@ -20,7 +20,7 @@ const icons = [
     title: "محصولات",
     icons: <IoCubeOutline />,
     id: 3,
-    src:"http://localhost:3000/products"
+     src:"https://mohammadpeyvaste-homex.vercel.app/products"
   },
   {
     title: " مشتریان وفادار ",

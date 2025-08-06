@@ -78,8 +78,8 @@ const Navbar = () => {
             </span>
           </div>
           <div className=" ">
-            <span className=" flex items-center gap-3 text-primary-800 text-xl ">
-              <FiPhone className=" hidden md:block" />
+            <span className=" flex items-center gap-3 text-primary-800  ">
+              <FiPhone className=" hidden md:block text-xl " />
               <div className="relative ">
                 <CiShoppingBasket
                   className="w-full h-full text-primary-800 text-3xl"
@@ -92,7 +92,7 @@ const Navbar = () => {
                 )}
               </div>
 
-              <FaRegUserCircle />
+              <FaRegUserCircle className="text-xl" />
             </span>
           </div>
         </div>

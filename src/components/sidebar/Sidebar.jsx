@@ -24,7 +24,7 @@ const Sidebar = () => {
         </button>
       </div>
 
-      <div className="pt-3">
+      <div className="p-4">
         جمع کل:
         <span>{getTotalPrice().toLocaleString()} تومان</span>
       </div>
@@ -71,3 +71,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+

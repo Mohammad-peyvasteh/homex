@@ -7,8 +7,8 @@ import { createContext, useState, useEffect, useContext } from "react";
 const ProductContext = createContext([]);
 
 export const ProductProvider = ({ children }) => {
-  const API_ITEMS = "https://json-server-production-ceef.up.railway.app/items";
-  const API_CART = "https://json-server-production-ceef.up.railway.app/cart";
+  const API_ITEMS = "https://homex-api.liara.run/items";
+  const API_CART = "https://homex-api.liara.run/cart";
 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);

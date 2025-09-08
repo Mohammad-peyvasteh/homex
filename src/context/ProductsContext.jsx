@@ -1,7 +1,5 @@
 "use client";
 
-
-
 import { createContext, useState, useEffect, useContext } from "react";
 
 const ProductContext = createContext([]);
@@ -15,6 +13,7 @@ export const ProductProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [showSidebar, setShowSidebar] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -47,12 +46,17 @@ export const ProductProvider = ({ children }) => {
     }, 1000);
   }, []);
 
- const addToCart = async (item) => {
-  
+  // افزودن آیتم به سبد خرید
+  const addToCart = async (item) => {
     const existing = cartItems.find((cartItem) => cartItem.id === item.id);
-    if (existing) {
 
-      await incrementQty(item.id);
+    if (existing) {
+      const updatedItem = await incrementQty(item.id);
+      if (updatedItem) {
+        setCartItems((prev) =>
+          prev.map((i) => (i.id === item.id ? updatedItem : i))
+        );
+      }
     } else {
       const newCartItem = { ...item, quantity: 1 };
       try {
@@ -70,6 +74,7 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
+  // افزایش تعداد
   const incrementQty = async (id) => {
     const item = cartItems.find((i) => i.id === id);
     if (!item) return;
@@ -87,17 +92,22 @@ export const ProductProvider = ({ children }) => {
       setCartItems((prev) =>
         prev.map((i) => (i.id === id ? data : i))
       );
+      return data;
     } catch (err) {
       console.error(err.message);
     }
   };
-   const decrementQty = async (id) => {
+
+  // کاهش تعداد یا حذف کامل
+  const decrementQty = async (id) => {
     const item = cartItems.find((i) => i.id === id);
     if (!item) return;
 
     if (item.quantity <= 1) {
       try {
-        const response = await fetch(`${API_CART}/${id}`, { method: "DELETE" });
+        const response = await fetch(`${API_CART}/${id}`, {
+          method: "DELETE",
+        });
         if (!response.ok) throw new Error("Failed to remove item from cart");
         setCartItems((prev) => prev.filter((i) => i.id !== id));
       } catch (err) {
@@ -122,7 +132,7 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
-
+  // محاسبه مجموع قیمت سبد خرید
   const getTotalPrice = () => {
     return cartItems.reduce((total, item) => {
       const price = parseInt(item.price, 10);
@@ -152,3 +162,4 @@ export const ProductProvider = ({ children }) => {
 };
 
 export const useProductContext = () => useContext(ProductContext);
+
